@@ -1,10 +1,17 @@
 package com.example.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RestController
+@RequestMapping("/main")
 public class firstController {
 
+
+    Logger log= LoggerFactory.getLogger(firstController.class);
 
     /**/
 
@@ -104,6 +111,18 @@ public class firstController {
  * Status code:
  *
  * link: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+ * */
+
+
+/**
+ * Types of logger
+ *
+ *  1.Trace ->
+ *  2.Debug
+ *  3.Info
+ *  4.Warn
+ *  5.Error
+ *
  * */
 
 

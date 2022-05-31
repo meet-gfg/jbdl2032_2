@@ -3,23 +3,42 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Student;
 import com.example.demo.service.StudentService;
-import org.apache.catalina.valves.StuckThreadDetectionValve;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
 
-    Map<Integer,Student> studentMap=new HashMap<>();
     Logger log= LoggerFactory.getLogger(StudentController.class);
+
+
+    @Autowired
+    StudentService service;
+
+
+
+   /**
+    * @Component : if this annotation is used directly or indirectly. Spring will create Bean of a class.
+    * if an object is created,managed and accessed by Spring  such objects are called Beans
+    * */
+
+   /**
+    * Accessing an object by our service
+    * 1. ask from Application Context
+    * 2. Inject it.
+    *
+    * */
 
     /**
      * 4 apis:
@@ -29,49 +48,37 @@ public class StudentController {
      * 4. delete a student. _ DELETE
      * */
 
-    @PostMapping("/add")
-    public Student addStudent(@RequestBody Student student){
-        try {
-            int id = studentMap.size() + 1;
-            student.setId(id);
-            studentMap.put(id, student);
-            return student;
-        }
-        catch (Exception ex) {
-            log.error("exception while adding student");
-        }
-        return null;
 
+    /**
+     * ResponseEntity is packet that carries with response data and HTTPstatus code.
+     *
+     * HTTPStatus is enum which maps the http status code with requirement.
+     * */
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addStudent(@RequestBody @Valid Student student){
+        return new ResponseEntity<>(service.addStudent(student), HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
-    public List<Student> getStudent(){
-        return new ArrayList<>(studentMap.values());
+    public ResponseEntity<List<Student>> getStudent(){
+        return new ResponseEntity<>(service.getAllStudent(),HttpStatus.OK);
     }
 
     @GetMapping("/id")
-    public Student getStudentById(@RequestParam("id") int id){
-        if(studentMap.containsKey(id))
-            return studentMap.get(id);
-        else
-            return null;
+    public ResponseEntity<Student> getStudentById(@RequestParam("id") int id){
+        return new ResponseEntity<>(service.getStudentById(id),HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public Student updateStudent(@RequestBody Student student){
-
-        StudentService service=new StudentService();
-        return service.updateStudent(student);
+    public ResponseEntity<Student> updateStudent(@RequestBody Student student){
+        return new ResponseEntity<>(service.updateStudent(student),HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
-    public boolean deleteStudent(@RequestParam("id") int id ){
-        if(id==0 || !studentMap.containsKey(id))
-            return false;
-        else{
-            studentMap.remove(id);
-            return true;
-        }
+    public ResponseEntity<?> deleteStudent(@RequestParam("id") int id ){
+
+        return new ResponseEntity<>(service.deleteStudent(id),HttpStatus.OK);
     }
 
 

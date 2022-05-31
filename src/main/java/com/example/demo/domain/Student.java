@@ -1,38 +1,25 @@
 package com.example.demo.domain;
 
-public class Student {
+
+import lombok.*;
+import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+@Data
+@AllArgsConstructor
+public class Student{
 
     private int id;
     private String name;
+    @Min(value=6,message = "age should greater than 6")
+    @Max(value=40,message = "age should less than 40")
     private int age;
 
-    public Student(int id, String name, int age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
+    @Email(message = "invalid email")
+    private String email;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 }
