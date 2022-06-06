@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -29,8 +30,10 @@ public class firstController {
  * */
 
 
+
     @GetMapping("/greet1")
     public String greetMyUser1(@RequestParam("name") String name){
+
         return "Hello " + name +"!!!";
     }
 
@@ -124,6 +127,31 @@ public class firstController {
  *  5.Error
  *
  * */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

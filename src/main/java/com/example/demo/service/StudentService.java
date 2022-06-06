@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.appinterface.StudentInternalService;
 import com.example.demo.controller.StudentController;
 import com.example.demo.domain.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,45 @@ import java.util.Map;
 
 @Service
 public class StudentService {
+
+
+    /***
+     * Types of Dependency injection
+     * 1. Constructor dependency injection -- recommended
+     * 2. Field dependency injection
+     * 3. Setter dependency injection
+     **/
+
+
+    /**Field dependency injection */
+   //Autowired
+    public StudentInternalService studentInternalService;
+    /**
+    private StudentInternalService studentInternalService=new StudentInternalService();
+     */
+
+
+    /**Constructor dependency injection*/
+//    public StudentService(StudentInternalService studentInternalService) {
+//        this.studentInternalService = studentInternalService;
+//    }
+//
+
+    /**Setter dependency injection
+     * usage: StudentService service=new StudentService();
+     *         service.setStudentInternalService(new StudentInternalServiceImplDev());
+     *         System.out.println("output 1 --> "+service.getStudentInteger()); //
+     *         service.setStudentInternalService(new StudentInternalServiceImpl());
+     *         System.out.println("output 2 -->"+service.getStudentInteger()); //
+     * */
+      @Autowired
+      public void setStudentInternalService(StudentInternalService service){
+          this.studentInternalService=service;
+      }
+
+
+
+
 
     Map<Integer,Student> studentMap=new HashMap<>();
     Logger log= LoggerFactory.getLogger(StudentController.class);
@@ -71,6 +113,12 @@ public class StudentService {
         }
     }
 
+    public int getStudentInteger(){
+       return this.getValueFromInternalService();
+    }
+    public int getValueFromInternalService(){
+        return studentInternalService.getStudentInteger();
+    }
 
     /**
      * usage of @Bean : it can be used on method only.
@@ -86,8 +134,55 @@ public class StudentService {
 
 
 
+/**
+ * @scope("prototype") // singleton
+ *
+ * @Autowired
+ * AvgService serv;
+ * list<int> 1list 50.60.50</int>
+ * serv.calAvg(1list); ->
+ *
+ *
+ *                              markslist
+ *                          METHOD{
+ *                              this.markslist=1list
+ *                              for(){
+ *                                  ///  1 thread
+ *                              }
+ *                              total/size
+ *                          }
+ *
+ *
+ * AvgService serv;
+ *  * list<int> 1list 70.90.60,30</int>
+ *  * serv.calAvg(1list);
+ *
+ *   {                             this.markslist
+ *  *                              method{this.markslist=1list // 2nd thread
+ *  *                              for(){
+ *  *                                  ///
+ *  *                              }
+ *  *                              total/size
+ *  *                          }
+ * */
 
 
+
+/*  request1
+@Autowired
+ * AvgService serv;
+ *
+ * serv.calculate(list1);
+ *
+ * */
+
+/*request 2
+* @Autowired
+ * AvgService serv;
+ *
+ * serv.calculate(list2);
+ *
+* */
 
 
 

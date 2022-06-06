@@ -1,8 +1,9 @@
 package com.example.demo.domain;
 
 
-import lombok.*;
-import org.springframework.lang.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Min;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Student{
 
     private int id;
